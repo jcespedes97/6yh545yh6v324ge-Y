@@ -1,0 +1,55 @@
+<h2>Report</h2>
+<div *ngIf="loadingPatients; else patientsView" class="flex w-full h-full justify-content-center align-items-center">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+<ng-template #patientsView>
+  <p-card>
+    <p-table [loading]="loadingPatients" [tableStyle]="{ 'min-width': '50rem' }" [value]="patients" class="w-full">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Birthdate</th>
+          <th>Gender</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template let-patient pTemplate="body">
+        <tr>
+          <td>{{ getPatientName(patient) }}</td>
+          <td>{{ patient.birthDate | date }}</td>
+          <td>{{ patient.gender }}</td>
+          <td>
+            <div class="flex">
+              <p-button (onClick)="viewPatient(patient)" [rounded]="true" class="mr-2" icon="pi pi-eye"
+                        pTooltip="View Patient Info"
+                        severity="info"
+                        size="small" tooltipPosition="bottom"></p-button>
+              <p-button (onClick)="showReportDialog(patient)" [rounded]="true" class="mr-2" icon="pi pi-list-check"
+                        pTooltip="Submit Report"
+                        severity="contrast"
+                        size="small" tooltipPosition="bottom"></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <div class="w-full flex justify-content-between align-items-center mt-4 sticky bottom-0 bg-white pb-3">
+      <p-button (onClick)="previousPage()" [disabled]="!previousLink" label="Previous"></p-button>
+      <p-button (onClick)="nextPage()" [disabled]="!nextLink" label="Next"></p-button>
+    </div>
+  </p-card>
+</ng-template>
+
+<p-dialog [(visible)]="patientDialogVisible" [modal]="true" [style]="{ width: '80rem' }" header="Patient Information">
+  <app-patient-info [patient]="selectedPatient"></app-patient-info>
+  <div class="flex justify-content-end gap-2">
+    <p-button (onClick)="closePatientDialog()" [outlined]="true" label="Close" severity="danger"/>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="patientReportDialogVisible" [modal]="true" [style]="{ width: '80rem' }" header="Patient Report">
+  <app-survey-page (submitted)="closeReportDialog()" [patient]="selectedPatient"></app-survey-page>
+  <div class="flex justify-content-end gap-2 mt-2">
+    <p-button (onClick)="closeReportDialog()" [outlined]="true" label="Close" severity="danger"/>
+  </div>
+</p-dialog>

@@ -1,0 +1,20 @@
+<div class="flex-column justify-content-center">
+  <h2 class="login-title">Please Login Or Take A Survey</h2>
+  <div class="flex">
+    <p-card class="mr-6" header="Provider">
+      <div class="flex w-9rem">
+        <p-button (click)="providerLogin()">Login</p-button>
+      </div>
+    </p-card>
+    <p-card class="mr-6" header="Patient">
+      <div class="flex w-9rem">
+        <p-button (click)="patientLogin()">Login</p-button>
+      </div>
+    </p-card>
+    <p-card header="Anonymous">
+      <div class="flex w-9rem">
+        <p-button routerLink="/anonymous">Take Survey</p-button>
+      </div>
+    </p-card>
+  </div>
+</div>

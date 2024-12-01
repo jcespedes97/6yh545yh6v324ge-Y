@@ -1,0 +1,97 @@
+<div class="p-fluid">
+  <!-- Survey Form -->
+  <form [formGroup]="surveyForm">
+    <h3>General Info</h3>
+    <div class="p-field">
+      <label for="name">Survey Name</label>
+      <input formControlName="name" id="name" pInputText type="text"/>
+    </div>
+
+    <div class="p-field-checkbox">
+      <p-checkbox binary="true" formControlName="active" label="Active"></p-checkbox>
+    </div>
+
+    <div class="p-field">
+      <label for="code">Survey Code</label>
+      <input formControlName="code" id="code" pInputText type="text"/>
+    </div>
+
+    <div class="p-field">
+      <label for="requiredScore">Required Score</label>
+      <input formControlName="requiredScore" id="requiredScore" pInputText type="number"/>
+    </div>
+
+    <!-- Questions -->
+    <div class="p-field">
+      <h3>Questions</h3>
+      <div formArrayName="questions">
+        <div *ngFor="let question of surveyFormQuestions; let i = index" [formGroupName]="i"
+             class="p-mb-4">
+          <fieldset class="p-fieldset">
+            <legend>Question {{ i + 1 }}</legend>
+
+            <!--            <div class="p-field">-->
+            <!--              <label for="type-{{ i }}">Type</label>-->
+            <!--              <input formControlName="type" id="type-{{ i }}" pInputText type="text"/>-->
+            <!--            </div>-->
+
+            <div class="p-field">
+              <label for="title-{{ i }}">Title</label>
+              <input formControlName="title" id="title-{{ i }}" pInputText type="text"/>
+            </div>
+
+            <div class="p-field-checkbox">
+              <p-checkbox binary="true" formControlName="isRequired" label="Required"></p-checkbox>
+            </div>
+            <div class="flex">
+              <p-button (click)="removeQuestion(i)" [outlined]="true" class="mt-2" label="Remove Question"
+                        severity="danger"
+                        size="small"></p-button>
+            </div>
+            <!-- Options -->
+            <div class="p-mb-3">
+              <h4>Options</h4>
+              <div formArrayName="options">
+                <div *ngFor="let option of getQuestionOptions(question); let j = index" [formGroupName]="j">
+                  <div class="flex flex-column">
+
+                    <div class="p-col">
+                      <label for="key-{{ i }}-{{ j }}">Key</label>
+                      <input formControlName="key" id="key-{{ i }}-{{ j }}" pInputText type="text"/>
+                    </div>
+                    <div class="p-col">
+                      <label for="value-{{ i }}-{{ j }}">Value</label>
+                      <input formControlName="value" id="value-{{ i }}-{{ j }}" pInputText type="text"/>
+                    </div>
+                    <div class="p-col">
+                      <label for="scoreValue-{{ i }}-{{ j }}">Score Value</label>
+                      <input formControlName="scoreValue" id="scoreValue-{{ i }}-{{ j }}" pInputText type="number"/>
+                    </div>
+                    <div class="flex">
+                      <p-button (click)="removeOption(i, j)" [outlined]="true" class="mt-2" label="Remove Option"
+                                severity="danger"
+                                size="small"></p-button>
+                    </div>
+                  </div>
+                  <p-divider></p-divider>
+                </div>
+              </div>
+              <div class="flex">
+                <p-button (click)="addOption(i)" [outlined]="true" class="mt-1" label="Add Option"
+                          severity="contrast" size="small"></p-button>
+              </div>
+
+            </div>
+          </fieldset>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="flex mt-3">
+      <p-button (click)="addQuestion()" [outlined]="true" class="mt-3" label="Add Question"
+                severity="contrast"></p-button>
+    </div>
+
+  </form>
+</div>

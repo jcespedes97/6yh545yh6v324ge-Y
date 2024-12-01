@@ -1,0 +1,18 @@
+:host {
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  box-shadow: 5px -1px 5px lightgray;
+  background-color: white;
+  padding-top: 10px;
+}
+
+p-button {
+  margin-bottom: 7px;
+}
+
+:host ::ng-deep p-button .p-button {
+  min-width: 180px !important;
+}

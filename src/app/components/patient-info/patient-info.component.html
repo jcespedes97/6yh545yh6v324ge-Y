@@ -1,0 +1,33 @@
+<p-tabView>
+  <p-tabPanel header="General Info">
+    <div class="flex flex-column">
+      <h3>Name</h3>
+      <p id="patientName">{{ name }}</p>
+      <h3>Birth date</h3>
+      <p>{{ patient?.birthDate | date }}</p>
+      <h3>Gender</h3>
+      <p>{{ patient?.gender }}</p>
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="Survey Results">
+    <p-table [tableStyle]="{ 'min-width': '50rem' }" [value]="surveyObservations" class="w-full">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Date Taken</th>
+          <th>Score</th>
+          <th>Code</th>
+        </tr>
+      </ng-template>
+      <ng-template let-obs pTemplate="body">
+        <tr>
+          <td>{{ getSurveyName(obs) }}</td>
+          <td>{{ obs.effectiveDateTime | date }}</td>
+          <td>{{ getSurveyScore(obs) }}</td>
+          <td>{{ getSurveyCode(obs) }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-tabPanel>
+</p-tabView>
+

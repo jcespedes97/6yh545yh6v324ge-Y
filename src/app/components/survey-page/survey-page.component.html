@@ -1,0 +1,69 @@
+<p-card class="w-full">
+  <form [formGroup]="surveyForm">
+    <p-stepper #stepper [linear]="true">
+      <p-stepperPanel header="Select">
+        <ng-template let-index="index" let-nextCallback="nextCallback"
+                     pTemplate="content">
+          <div class="flex flex-column h-12rem">
+            <div
+              class="flex-auto flex-column justify-content-center align-items-center font-medium">
+              <h3>What would you like to report today?</h3>
+              <p-dropdown [options]="surveys" formControlName="selectedSurvey" placeholder="Select One">
+                <ng-template let-item pTemplate="selectedItem">
+                  {{
+                    item.name
+                  }}
+                </ng-template>
+                <ng-template let-survey pTemplate="item">
+                  {{ survey.name }}
+                </ng-template>
+              </p-dropdown>
+            </div>
+
+          </div>
+          <div class="flex pt-4 justify-content-end">
+            <p-button (onClick)="nextCallback.emit()" [disabled]="!surveyForm.get('selectedSurvey')?.valid"
+                      icon="pi pi-arrow-right" iconPos="right"
+                      label="Next"/>
+
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Survey">
+        <ng-template let-index="index" let-prevCallback="prevCallback"
+                     pTemplate="content">
+          <div class="flex flex-column">
+            <div
+              class="flex-auto flex-column justify-content-center align-items-center font-medium">
+              <h3>Please fill out the questions</h3>
+              <div formArrayName="surveyQuestions">
+                <div *ngFor="let questionControl of surveyQuestions.controls; let i = index" [formGroupName]="i">
+                  <h4>{{ getQuestion(questionControl.value.questionId)?.title }}</h4>
+                  <div
+                    *ngIf="getQuestion(questionControl.value.questionId)?.type === 'open-entry'; else categoricalTemplate">
+                    <input class="w-full" formControlName="answer" pInputText type="text"/>
+                  </div>
+                  <ng-template #categoricalTemplate>
+                    <ng-container *ngFor="let option of getQuestion(questionControl.value.questionId)?.options">
+                      <div class="flex">
+                        <input [id]="questionControl.value.questionId" [value]="option.value" class="field-checkbox"
+                               formControlName="answer" type="radio">
+                        <label [for]="option.key" class="ml-1"> {{ option.value }}</label>
+                      </div>
+                    </ng-container>
+
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex pt-4 justify-content-between">
+            <p-button (onClick)="prevCallback.emit()" icon="pi pi-arrow-left" iconPos="left" label="Back"/>
+            <p-button (onClick)="submit()" [disabled]="!surveyForm.valid" icon="pi pi-upload" iconPos="right"
+                      label="Submit"/>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+    </p-stepper>
+  </form>
+</p-card>

@@ -1,0 +1,55 @@
+<ng-container *ngIf="currentView === 'table'; else editView">
+  <div class="flex justify-content-between align-items-center">
+    <h2>Available Surveys</h2>
+    <p-button (onClick)="create()" icon="pi pi-plus" iconPos="left" label="Create" severity="primary"></p-button>
+  </div>
+
+  <p-table [columns]="columns" [value]="surveys" class="flex-grow-1">
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let col of columns">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template let-columns="columns" let-rowData pTemplate="body">
+      <tr>
+        <td *ngFor="let col of columns">
+          <ng-container *ngIf="col.field;else actionsTemplate">
+            {{ rowData[col.field] }}
+          </ng-container>
+          <ng-template #actionsTemplate>
+            <p-button (onClick)="delete(rowData)" [rounded]="true"
+                      class="mr-2"
+                      icon="pi pi-trash"
+                      pTooltip="Delete Survey"
+                      severity="danger"
+                      size="small"
+                      tooltipPosition="bottom"></p-button>
+            <p-button (onClick)="toggle(rowData)" [icon]="rowData.active ? 'pi pi-circle-fill' : 'pi pi-circle'"
+                      [rounded]="true"
+                      pTooltip="Toggle Survey Active"
+                      severity="info"
+                      size="small"
+                      tooltipPosition="bottom"></p-button>
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-container>
+<ng-template #editView>
+  <div class="w-full flex flex-column justify-content-between flex-grow-1">
+    <h2>Create/Edit Survey</h2>
+    <div class="flex-grow-1">
+      <app-survey-edit-form (surveyValueChanged)="updateSurveyValue($event)"></app-survey-edit-form>
+    </div>
+
+    <div class="w-full flex justify-content-between align-items-center mt-5">
+      <p-button (onClick)="cancelEdit()" [outlined]="true" icon="pi pi-arrow-left" iconPos="left"
+                label="Cancel" severity="info"></p-button>
+      <p-button (onClick)="save()" icon="pi pi-save" iconPos="right" label="Submit" severity="primary"></p-button>
+    </div>
+  </div>
+
+</ng-template>

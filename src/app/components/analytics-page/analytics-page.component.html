@@ -1,0 +1,33 @@
+<h2>Survey Analytics</h2>
+<p-dropdown (ngModelChange)="updateSelectedSurvey($event)" [(ngModel)]="selectedSurvey" [options]="surveys"
+            placeholder="Select One">
+  <ng-template let-item pTemplate="selectedItem">
+    {{
+      item.name
+    }}
+  </ng-template>
+  <ng-template let-survey pTemplate="item">
+    {{ survey.name }}
+  </ng-template>
+</p-dropdown>
+
+<p-tabView *ngIf="selectedSurvey; else noSurveySelected">
+  <p-tabPanel header="Map">
+    <div
+      (leafletMapReady)="onMapReady($event)"
+      [leafletLayers]="leafletLayers"
+      [leafletOptions]="leafletOptions"
+      leaflet style="height: 600px">
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="Time Series">
+    <p-chart [data]="monthData" [options]="options" type="line"/>
+  </p-tabPanel>
+</p-tabView>
+
+
+<ng-template #noSurveySelected>
+  <div class="mt-4">
+    Please select a survey to view analytics
+  </div>
+</ng-template>

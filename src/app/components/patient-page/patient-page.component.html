@@ -1,0 +1,11 @@
+<div class="flex flex-column w-full">
+  <app-header userType="Patient"></app-header>
+  <div class="flex flex-grow-1">
+    <app-nav-bar [navItems]="nav" class="flex-grow-1"></app-nav-bar>
+    <div class="w-full p-4 flex align-items-center justify-content-center">
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+
+</div>
